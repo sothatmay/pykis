@@ -44,6 +44,7 @@ class APIResponse:
         self.header: Json = self._header(resp)
         self.body: Json = resp.json()
         self.message: str = self._message()
+        self.message_code: str = self.body.get("msg_cd", None)
         self.return_code: Optional[str] = self._return_code()
         self.outputs: List[Json] = self._outputs()
 
@@ -58,6 +59,7 @@ class APIResponse:
         오류가 난 경우 예외를 던진다.
         """
         error_message = f"http response: {self.http_code}, " + \
+                        f"message code: {self.message_code}, " + \
                         f"return code: {self.return_code}. msg: {self.message}"
 
         if check_http_error and self.http_code != 200:
