@@ -20,6 +20,7 @@ from typing import Callable, Iterable, Optional, NamedTuple
 from collections import namedtuple
 import pandas as pd
 from .request_utility import Json, APIResponse
+import time
 
 
 def get_order_tr_id_from_market_code(market_code: str, is_buy: bool) -> str:
@@ -95,6 +96,8 @@ def send_continuous_query(request_function: Callable[[Json, Json], APIResponse],
         query_code = get_continuous_query_code(is_kr)
         extra_param[f"CTX_AREA_FK{query_code}"] = res.body[f"ctx_area_fk{query_code}"]
         extra_param[f"CTX_AREA_NK{query_code}"] = res.body[f"ctx_area_nk{query_code}"]
+        print('fixme: 가상 계좌만 0.5초 쉬면 되는데, 여기서 당장 가상계좌 구분이 안되서 일단 무조건 0.5초 쉰다.')
+        time.sleep(0.501)
     return pd.concat(outputs)
 
 
